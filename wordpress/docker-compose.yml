@@ -1,0 +1,22 @@
+﻿services:
+  wordpress:
+    image: wordpress:latest
+    container_name: vm2_wordpress
+    networks:
+      - vm2_network
+    environment:
+      WORDPRESS_DB_HOST: ${MARIADB_HOST}          # Host do MariaDB compartilhado
+      WORDPRESS_DB_USER: ${MARIADB_USER_WP}      # Usuário específico do WP
+      WORDPRESS_DB_PASSWORD: ${MARIADB_PASSWORD_WP}  # Senha do usuário WP
+      WORDPRESS_DB_NAME: ${MARIADB_DB_WORDPRESS}     # Banco específico do WP
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ALLOW_MULTISITE', true);
+        define('MULTISITE', true);
+        define('SUBDOMAIN_INSTALL', true);
+    volumes:
+      - ./wordpress:/var/www/html
+    restart: unless-stopped
+
+networks:
+  vm2_network:
+    external: true

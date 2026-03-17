@@ -1,0 +1,18 @@
+﻿services:
+  mariadb:
+    image: mariadb:latest
+    container_name: vm2_mariadb
+    networks:
+      - vm2_network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
+    restart: unless-stopped
+
+networks:
+  vm2_network:
+    external: true

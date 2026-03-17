@@ -1,0 +1,12 @@
+﻿# Ignorar variáveis de ambiente
+.env
+
+# Ignorar dados persistentes
+mariadb/data/
+mongodb/data/
+wordpress/wp-content/uploads/
+
+# Ignorar arquivos temporários do sistema
+*.log
+*.tmp
+.DS_Store

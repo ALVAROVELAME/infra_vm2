@@ -1,0 +1,17 @@
+﻿services:
+  nginx:
+    image: nginx:latest
+    container_name: vm2_nginx
+    networks:
+      - vm2_network
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./wordpress:/var/www/html
+    restart: unless-stopped
+
+networks:
+  vm2_network:
+    external: true

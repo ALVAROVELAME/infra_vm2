@@ -1,0 +1,17 @@
+﻿# Ignorar variáveis de ambiente
+.env
+
+# Ignorar dados persistentes
+mariadb/data/
+mongodb/data/
+wordpress/wp-content/uploads/
+
+# Ignorar pastas de build e dependências
+node_modules/
+dist/
+
+# Ignorar arquivos de controle de versão e logs
+.git/
+*.log
+*.tmp
+.DS_Store
