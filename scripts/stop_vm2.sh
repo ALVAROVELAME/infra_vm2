@@ -1,10 +1,10 @@
 #!/bin/bash
-# ⏹ Stop VM2 completo (Linux corrigido)
-echo 'Parando containers VM2...'
-
-docker-compose -f nginx/docker-compose.yml down
-docker-compose -f wordpress/docker-compose.yml down
-docker-compose -f mariadb/docker-compose.yml down
-docker-compose -f mongodb/docker-compose.yml down
-
-echo '✅ Todos os containers parados!'
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+echo "🛑 Parando módulos da VM2..."
+for dir in "$ROOT_DIR"/*/ ; do
+    if [ -f "$dir/docker-compose.yml" ]; then
+        echo "⏸️ Parando: $(basename "$dir")"
+        docker-compose -f "$dir/docker-compose.yml" --env-file "$ROOT_DIR/.env" stop
+    fi
+done
+echo "✅ Módulos parados."

@@ -1,10 +1,10 @@
 #!/bin/bash
-# 🔄 Reset VM2 completo (Linux corrigido)
-echo 'Resetando containers e volumes VM2...'
-
-docker-compose -f nginx/docker-compose.yml down -v
-docker-compose -f wordpress/docker-compose.yml down -v
-docker-compose -f mariadb/docker-compose.yml down -v
-docker-compose -f mongodb/docker-compose.yml down -v
-
-echo '✅ Reset completo e volumes limpos!'
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+echo "🧹 Resetando módulos e volumes VM2..."
+for dir in "$ROOT_DIR"/*/ ; do
+    if [ -f "$dir/docker-compose.yml" ]; then
+        echo "🗑️ Removendo: $(basename "$dir")"
+        docker-compose -f "$dir/docker-compose.yml" --env-file "$ROOT_DIR/.env" down -v
+    fi
+done
+echo "✅ Reset modular completo!"

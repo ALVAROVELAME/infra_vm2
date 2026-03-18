@@ -1,11 +1,20 @@
 #!/bin/bash
-echo '🚀 Iniciando infra VM2 (Modo Moderno)...'
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+echo "🚀 Iniciando módulos da VM2 (Forçando variáveis .env)..."
 
-# A versão sem hífen é mais estável e lê o .env automaticamente se estiver na raiz
-docker compose --env-file .env -f mariadb/docker-compose.yml up -d
-docker compose --env-file .env -f mongodb/docker-compose.yml up -d
-docker compose --env-file .env -f wordpress/docker-compose.yml up -d
-docker compose --env-file .env -f nginx/docker-compose.yml up -d
+# --- MÁGICA AQUI: Carrega o .env da raiz para a memória do script ---
+if [ -f "$ROOT_DIR/.env" ]; then
+    export $(grep -v '^#' "$ROOT_DIR/.env" | xargs)
+    echo "✅ Variáveis de ambiente carregadas do .env raiz."
+fi
 
-echo '✅ Tudo online e configurado!'
-
+for dir in "$ROOT_DIR"/*/ ; do
+    if [ -f "$dir/docker-compose.yml" ]; then
+        MODULE=$(basename "$dir")
+        echo "📦 Iniciando módulo: $MODULE"
+        
+        # Roda o docker-compose usando as variáveis que já estão na memória (exportadas)
+        docker-compose -f "$dir/docker-compose.yml" up -d
+    fi
+done
+echo "✅ Todos os módulos iniciados com sucesso!"
