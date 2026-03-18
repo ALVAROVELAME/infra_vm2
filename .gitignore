@@ -1,12 +1,20 @@
-﻿# Ignorar variáveis de ambiente
+# --- SEGURANÇA ---
 .env
+*.pem
+*.key
 
-# Ignorar dados persistentes
-mariadb/data/
-mongodb/data/
+# --- IGNORAR TUDO DO WORDPRESS (Exceto o Docker Compose) ---
+# Isso ignora todos os arquivos PHP e pastas do WP
+wordpress/*
+# Mas permite que o arquivo de configuração do Docker continue no Git
+!wordpress/docker-compose.yml
+
+# --- DADOS E VOLUMES ---
+**/data/
 wordpress/wp-content/uploads/
 
-# Ignorar arquivos temporários do sistema
+# --- SISTEMA ---
 *.log
 *.tmp
 .DS_Store
+
