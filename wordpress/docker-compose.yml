@@ -1,25 +1,25 @@
-﻿services:
+services:
   wordpress:
     image: wordpress:latest
     container_name: vm2_wordpress
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - "8080:80"
     env_file:
       - ../.env
-    networks:
-      - vm2_network
     environment:
-      # Usando exatamente os nomes que estão no seu .env enviado:
-      WORDPRESS_DB_HOST: ${WP_DB_HOST}
+      WORDPRESS_DB_HOST: vm2_mariadb
       WORDPRESS_DB_USER: ${WP_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD}
       WORDPRESS_DB_NAME: ${WP_DB_NAME}
-      WORDPRESS_CONFIG_EXTRA: |
-        define('WP_ALLOW_MULTISITE', true);
-        define('MULTISITE', true);
-        define('SUBDOMAIN_INSTALL', true);
     volumes:
       - ./wordpress:/var/www/html
-    restart: unless-stopped
+    networks:
+      - projeto_network
 
 networks:
-  vm2_network:
+  projeto_network:
     external: true

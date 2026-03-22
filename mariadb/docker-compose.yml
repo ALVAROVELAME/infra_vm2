@@ -1,18 +1,30 @@
-﻿services:
+services:
   mariadb:
     image: mariadb:latest
     container_name: vm2_mariadb
-    networks:
-      - vm2_network
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    ports:
+      - "3306:3306"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     environment:
       MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MARIADB_DATABASE}
       MYSQL_USER: ${MARIADB_USER}
       MYSQL_PASSWORD: ${MARIADB_PASSWORD}
     volumes:
-      - ./mariadb/data:/var/lib/mysql
-    restart: unless-stopped
+      - ./mariadb_data:/var/lib/mysql
+    networks:
+      - projeto_network
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+          cpus: '0.50'
 
 networks:
-  vm2_network:
+  projeto_network:
     external: true

@@ -1,20 +1,22 @@
-# --- SEGURANÇA ---
+# --- SEGURANÇA (Arquivos Sensíveis) ---
 .env
+**/.env
 *.pem
 *.key
+*.crt
 
-# --- IGNORAR TUDO DO WORDPRESS (Exceto o Docker Compose) ---
-# Isso ignora todos os arquivos PHP e pastas do WP
-wordpress/*
-# Mas permite que o arquivo de configuração do Docker continue no Git
-!wordpress/docker-compose.yml
-
-# --- DADOS E VOLUMES ---
+# --- BANCO DE DADOS E VOLUMES (Universal) ---
+# Ignora qualquer pasta que termine com _data ou contenha /data/
+**/*_data/
 **/data/
-wordpress/wp-content/uploads/
+**/mariadb/
+**/mongodb/
+
+# --- WORDPRESS (Sua lógica preferida) ---
+wordpress/*
+!wordpress/docker-compose.yml
 
 # --- SISTEMA ---
 *.log
 *.tmp
 .DS_Store
-
